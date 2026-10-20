@@ -6,7 +6,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class User {
-	private static Pattern usernamePattern = Pattern.compile("^[a-z0-9%+\\-.]+@[a-z0-9][a-z0-9.\\-]*\\.[a-z]{2,}$", Pattern.CASE_INSENSITIVE);
+	// username validity pattern
+	private static Pattern usernamePattern = Pattern.compile("^[a-z0-9._%+-]+@[a-z0-9][a-z0-9.-]*.[a-z]{2,}$", Pattern.CASE_INSENSITIVE);
 	
 	// fields
 	protected String username;
@@ -47,13 +48,17 @@ public class User {
 	
 	// validation tests
 	private void validateUname(String username) throws InvalidUserException{
+		//redundency empty check
 		if (username == null || username.isEmpty()) {
 			throw new InvalidUserException("Please enter a valid Email as username");
 		}
+		
+		// length check
 		if (username.length() > 50) {
 			throw new InvalidUserException("Username is too long, try something shorter");
 		}
 		
+		// pattern check
 		Matcher usernameMatcher = usernamePattern.matcher(username);
 		if(!usernameMatcher.find()) {
 			throw new InvalidUserException("Please enter a valid Email as username");
@@ -61,10 +66,12 @@ public class User {
 	}
 	
 	private void validatePass(String password) throws InvalidPasswordException {
+		//redundency empty check
 		if (password == null) {
 			throw new InvalidPasswordException("Please enter a valid password");
 		}
 		
+		//length checks
 		if (password.length() < 8) {
 			throw new InvalidPasswordException("Your password is too short, add more characters");
 		}
@@ -73,6 +80,7 @@ public class User {
 			throw new InvalidPasswordException("Your password is too long, try a shorter one");
 		}
 		
+		// validity checks
 		Pattern letterP = Pattern.compile("[a-z]",Pattern.CASE_INSENSITIVE);
 		Pattern numberP = Pattern.compile("[0-9]");
 		Pattern symbolP = Pattern.compile("[^a-zA-Z0-9 ]");
