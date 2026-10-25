@@ -9,16 +9,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import com.example.lab1.HelloApplication;
 import exceptions.InvalidPasswordException;
 import exceptions.InvalidUserException;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
-public class UsersApp {
+public class UsersApp extends Application {
 
-	public static void main(String[] args) {
+	public static void loadUsers() {
 		ArrayList<User> users = new ArrayList<User>();
 		
 		try {
-			// read the user canditates from file
+			// read the user candidates from file
 			BufferedReader reader = new BufferedReader(new FileReader("src/users.txt"));
 			String line;
 			while((line = reader.readLine()) != null) {
@@ -61,4 +66,13 @@ public class UsersApp {
 		}
 	}
 
+	@Override
+	public void start(Stage stage) throws Exception {
+		loadUsers();
+		FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("tester.fxml"));
+		Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+		stage.setTitle("Hello!");
+		stage.setScene(scene);
+		stage.show();
+	}
 }
