@@ -69,9 +69,9 @@ public class UsersApp extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		loadUsers();
-		FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("tester.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("loginView.fxml"));
 		Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-		stage.setTitle("Hello!");
+		stage.setTitle("Login");
 		stage.setScene(scene);
 		stage.show();
 	}
