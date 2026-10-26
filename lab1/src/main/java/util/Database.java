@@ -16,9 +16,9 @@ public class Database {
        for classes acting as databases
 
      */
-//    public static void setUsers(ArrayList<User> users) {
-//        Database.users = users;
-//    }
+    public static void setUsers(ArrayList<User> users) {
+        Database.users = users;
+    }
 
     // methods
     public static void addUser(User user) {

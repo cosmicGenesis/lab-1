@@ -23,20 +23,15 @@ public class loginController {
 
     @FXML
     void login(ActionEvent event) throws IOException {
-        /* temporary init arraylist
-           will be replaced with actual data calls
-         */
-        ArrayList<User> usersList = new ArrayList<User>();
-
         String uname = unameField.getText();
         String pass = passwordField.getText();
 
-        //perform data call
+        // Attempt to find matching user
         boolean userFound = Database.findUser(uname,pass);
         if (userFound) {
             ScreenManager.goToScreen("welcomeView.fxml","test");
         } else {
-
+            errorTextField.setText("Username or Password are incorrect");
         }
     }
 
