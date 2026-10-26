@@ -9,13 +9,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import com.example.lab1.HelloApplication;
 import exceptions.InvalidPasswordException;
 import exceptions.InvalidUserException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import util.Database;
 import util.ScreenManager;
 
 public class UsersApp extends Application {
@@ -36,6 +36,7 @@ public class UsersApp extends Application {
 						String password = parts[1];
 						User newUser = new User(username, password);
 						users.add(newUser);
+						Database.addUser(newUser);
 					}	
 					
 				     
@@ -71,6 +72,8 @@ public class UsersApp extends Application {
 	public void start(Stage stage) throws Exception {
 		loadUsers();
 		ScreenManager.setStage(stage);
+		// Requirement 2.4: Ensure clicking 'X' closes the window and terminates the application completely
+		stage.setOnCloseRequest(e -> javafx.application.Platform.exit());
 		FXMLLoader fxmlLoader = new FXMLLoader(UsersApp.class.getResource("loginView.fxml"));
 		Scene scene = new Scene(fxmlLoader.load(), 320, 240);
 		stage.setTitle("Login");
