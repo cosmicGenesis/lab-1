@@ -16,6 +16,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import util.ScreenManager;
 
 public class UsersApp extends Application {
 
@@ -69,7 +70,8 @@ public class UsersApp extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		loadUsers();
-		FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("loginView.fxml"));
+		ScreenManager.setStage(stage);
+		FXMLLoader fxmlLoader = new FXMLLoader(UsersApp.class.getResource("loginView.fxml"));
 		Scene scene = new Scene(fxmlLoader.load(), 320, 240);
 		stage.setTitle("Login");
 		stage.setScene(scene);

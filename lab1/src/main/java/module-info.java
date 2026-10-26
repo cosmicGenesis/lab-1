@@ -5,8 +5,10 @@ module com.example.lab1 {
 
     opens com.example.lab1 to javafx.fxml;
     opens controllers to javafx.fxml;
+    opens util to javafx.fxml;
     exports com.example.lab1;
     exports lab1;
     exports exceptions;
     exports controllers;
+    exports util;
 }
