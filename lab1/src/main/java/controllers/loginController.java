@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import lab1.User;
+import util.Database;
 import util.ScreenManager;
 
 import java.io.IOException;
@@ -31,7 +32,7 @@ public class loginController {
         String pass = passwordField.getText();
 
         //perform data call
-        boolean userFound = true;
+        boolean userFound = Database.findUser(uname,pass);
         if (userFound) {
             ScreenManager.goToScreen("welcomeView.fxml","test");
         } else {
