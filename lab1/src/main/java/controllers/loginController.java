@@ -26,13 +26,13 @@ public class loginController {
         String uname = unameField.getText();
         String pass = passwordField.getText();
 
-        // Attempt to find matching user
-        boolean userFound = Database.findUser(uname,pass);
-        if (userFound) {
-            ScreenManager.goToScreen("welcomeView.fxml","Welcome to the System");
-        } else {
-            errorTextField.setText("Username or Password are incorrect");
-        }
+//        // Attempt to find matching user
+//        boolean userFound = Database.findUser(uname,pass);
+//        if (userFound) {
+//            ScreenManager.goToScreen("welcomeView.fxml","Welcome to the System");
+//        } else {
+//            errorTextField.setText("Username or Password are incorrect");
+//        }
     }
 
 }
