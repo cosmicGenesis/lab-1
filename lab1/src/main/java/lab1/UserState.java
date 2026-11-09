@@ -1,26 +1,24 @@
 package lab1;
 
 public class UserState {
-    private boolean isBlocked;
+    private int failedAttempts;
     private int blockPeriodEnd;
 
     public UserState(){
-        this.isBlocked = false;
+        this.failedAttempts = 0;
         this.blockPeriodEnd = 0;
-    }
-
-    synchronized public boolean isBlocked() {
-        return isBlocked;
     }
 
     synchronized public int getBlockPeriodEnd() {
         return blockPeriodEnd;
     }
 
-    // methods
-    synchronized public void blockUser(int blockPeriodEnd) {
-        this.isBlocked = true;
-        this.blockPeriodEnd = blockPeriodEnd;
+    public int getFailedAttempts() {
+        return failedAttempts;
+    }
+
+    public void setFailedAttempts(int failedAttempts) {
+        this.failedAttempts = failedAttempts;
     }
 
 }

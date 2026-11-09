@@ -6,7 +6,6 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
 
-
 <VBox alignment="CENTER" spacing="10.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.loginController">
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -14,7 +13,7 @@
    <children>
       <TextField fx:id="unameField" promptText="Username" />
       <TextField fx:id="passwordField" promptText="Password" />
-      <Button mnemonicParsing="false" onAction="#login" text="Login" />
+      <Button fx:id="loginBtn" mnemonicParsing="false" onAction="#login" text="Login" />
       <Label fx:id="errorTextField" textFill="RED" />
    </children>
 </VBox>

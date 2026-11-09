@@ -1,6 +1,7 @@
 package controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import lab1.User;
@@ -22,17 +23,16 @@ public class loginController {
     private TextField unameField;
 
     @FXML
+    private Button loginBtn;
+
+    @FXML
     void login(ActionEvent event) throws IOException {
         String uname = unameField.getText();
         String pass = passwordField.getText();
 
-//        // Attempt to find matching user
-//        boolean userFound = Database.findUser(uname,pass);
-//        if (userFound) {
-//            ScreenManager.goToScreen("welcomeView.fxml","Welcome to the System");
-//        } else {
-//            errorTextField.setText("Username or Password are incorrect");
-//        }
+        loginBtn.setDisable(true);
+
+        //TODO: init login view
     }
 
 }

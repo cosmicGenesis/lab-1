@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.BlockingQueue;
 
 import exceptions.InvalidPasswordException;
 import exceptions.InvalidUserException;
@@ -17,8 +18,11 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import threads.FailureWorker;
 import util.Database;
+import util.FailedAttempt;
 import util.ScreenManager;
+import util.ThreadCommunications;
 
 public class UsersApp extends Application {
 
@@ -65,6 +69,7 @@ public class UsersApp extends Application {
 				try {
 					int val = Integer.parseInt(param);
 					if (val < 1) {
+						System.out.println("Invalid value for " + paramName);
 						params.add(getPosInt(paramName));
 					} else {
 						params.add(val);
@@ -128,9 +133,20 @@ public class UsersApp extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		System.out.println(handleParams());
+		//init tracker
+		List<Integer> params = handleParams();
+		Database.initTracker(params.get(0),params.get(1));
 
+		// init users
 		loadUsers();
+
+		// init and run FailureWorker pair
+		FailureWorker fw1 = new FailureWorker("fw1");
+		new Thread(fw1).start();
+		FailureWorker fw2 = new FailureWorker("fw2");
+		new Thread(fw2).start();
+
+		// init screen
 		ScreenManager.setStage(stage);
 		// Requirement 2.4: Ensure clicking 'X' closes the window and terminates the application completely
 		stage.setOnCloseRequest(e -> javafx.application.Platform.exit());
