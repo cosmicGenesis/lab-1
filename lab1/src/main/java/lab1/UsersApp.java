@@ -8,6 +8,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
 
 import exceptions.InvalidPasswordException;
 import exceptions.InvalidUserException;
@@ -19,6 +21,62 @@ import util.Database;
 import util.ScreenManager;
 
 public class UsersApp extends Application {
+
+	public int getPosInt(String paramName) {
+		int val = -1;
+		System.out.print("Please input value for " + paramName + "(whole positive number): ");
+		while (val < 1) {
+            Scanner scanner = new Scanner(System.in);
+            while (!scanner.hasNextInt()) {
+				System.out.println("invalid input: Not an int");
+				System.out.print("Please try again: ");
+				scanner.next(); // Discard the invalid input token
+			}
+
+			val = scanner.nextInt();
+			if(val < 1){
+				System.out.println("Number must atleast 1");
+				System.out.print("Please try again: ");
+			}
+		}
+		return val;
+	}
+
+	public List<Integer> requestParams() {
+		List<Integer> params = new ArrayList<>();
+		params.add(getPosInt("Max Attempts"));
+		params.add(getPosInt("Block Time (in seconds)"));
+		return params;
+	}
+
+	public List<Integer> handleParams() {
+		List<String> rawParams = getParameters().getRaw();
+		List<Integer> params = new ArrayList<Integer>();
+
+		// check if params are missing
+		if (rawParams.size() < 2) {
+			System.out.println("Missing Params, Please try again manually");
+			params = requestParams();
+		} else {
+			// check param validity
+			for (int i=0;i<2;i++) {
+				String param = rawParams.get(i);
+				String paramName = i == 0 ? "Max Attempts" : "Block Time (in seconds)";
+				try {
+					int val = Integer.parseInt(param);
+					if (val < 1) {
+						params.add(getPosInt(paramName));
+					} else {
+						params.add(val);
+					}
+                } catch (NumberFormatException e) {
+					System.out.println("Invalid value for " + paramName);
+					params.add(getPosInt(paramName));
+				}
+			}
+		}
+		return params;
+	}
 
 	public static void loadUsers() {
 		ArrayList<User> users = new ArrayList<User>();
@@ -70,6 +128,8 @@ public class UsersApp extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
+		System.out.println(handleParams());
+
 		loadUsers();
 		ScreenManager.setStage(stage);
 		// Requirement 2.4: Ensure clicking 'X' closes the window and terminates the application completely
