@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import lab1.User;
+import threads.LoginTask;
 import util.Database;
 import util.ScreenManager;
 
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class loginController {
+    private LoginTask loginTask;
 
     @FXML
     private Label errorTextField;
@@ -33,6 +35,14 @@ public class loginController {
         loginBtn.setDisable(true);
 
         //TODO: init login thread
+        loginTask.setLoginData(uname,pass);
+        new Thread(loginTask).start();
+
+        loginBtn.setDisable(false);
     }
 
+    @FXML
+    void initialize() {
+        this.loginTask = new LoginTask(errorTextField);
+    }
 }
