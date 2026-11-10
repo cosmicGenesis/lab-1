@@ -29,15 +29,21 @@ public class LoginController {
     @FXML
     private Button loginBtn;
 
+    private void runThread(Runnable task) {
+        Thread newThread = new Thread(task);
+        newThread.setDaemon(true);
+        newThread.start();
+    }
+
     @FXML
-    void login(ActionEvent event) throws IOException {
+    void login(ActionEvent event) {
         String uname = unameField.getText();
         String pass = passwordField.getText();
 
-        loginBtn.setDisable(true);
+        this.loginBtn.setDisable(true);
 
-        loginTask.setLoginData(uname,pass);
-        new Thread(loginTask).start();
+        this.loginTask.setLoginData(uname,pass);
+        runThread(this.loginTask);
     }
 
     public void handleLoginResult(LoginStatus status, String username) {
@@ -59,7 +65,7 @@ public class LoginController {
                     errorTextField.setText("Incorrect login, " + attemptsLeft + " attempts left");
                     releaseBtn = true;
                 } else {
-                    new Thread(this.countdownTask).start();
+                    runThread(this.countdownTask);
                 }
                 break;
             case SUCCESS:
