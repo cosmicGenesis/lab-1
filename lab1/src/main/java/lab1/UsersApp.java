@@ -141,9 +141,10 @@ public class UsersApp extends Application {
 		loadUsers();
 
 		// init and run FailureWorker pair
-		FailureWorker fw = new FailureWorker();
-		new Thread(fw).start();
-		new Thread(fw).start();
+		FailureWorker fw1 = new FailureWorker();
+		fw1.start();
+		FailureWorker fw2 = new FailureWorker();
+		fw2.start();
 
 		// init screen
 		ScreenManager.setStage(stage);
