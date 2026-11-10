@@ -32,7 +32,7 @@ public class loginController {
 
         loginBtn.setDisable(true);
 
-        //TODO: init login view
+        //TODO: init login thread
     }
 
 }

@@ -9,11 +9,9 @@ import java.util.concurrent.BlockingQueue;
 
 public class FailureWorker extends Thread{
     private BlockingQueue<FailedAttempt> failQueue;
-    private String name;
 
-    public FailureWorker(String threadName){
+    public FailureWorker(){
         this.failQueue = ThreadCommunications.getLoginFailQueue();
-        this.name = threadName;
         this.setDaemon(true);
     }
 
@@ -25,7 +23,7 @@ public class FailureWorker extends Thread{
 
                 //Draw data from the event
                 String username = failedAttempt.getUsername();
-                System.out.println(username + " " + this.name);
+
                 //Increase fail count and return result
                 AttemptTracker tracker = Database.getAttemptTracker();
                 failedAttempt.setResponse(tracker.increaseFailedAttempts(username));
