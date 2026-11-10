@@ -15,8 +15,8 @@ public class AttemptTracker {
         this.states = new ConcurrentHashMap<String, UserState>();
     }
 
-    public int getAttemptsPermitted() {
-        return attemptsPermitted;
+    public int getBlockTime() {
+        return blockTime;
     }
 
     public void addUser(String username) {
@@ -36,7 +36,7 @@ public class AttemptTracker {
 
         if (failedAttempts >= this.attemptsPermitted) {
             state.setFailedAttempts(this.attemptsPermitted);
-            // set block timer
+            state.setBlockPeriodEnd(10);
             return true;
         } else {
             state.setFailedAttempts(failedAttempts);
@@ -47,5 +47,10 @@ public class AttemptTracker {
     public int getAttemptsLeft(String username) {
         UserState state = getUserState(username);
         return this.attemptsPermitted - state.getFailedAttempts();
+    }
+
+    public void resetAttempts(String username) {
+        UserState state = getUserState(username);
+        state.setFailedAttempts(0);
     }
 }

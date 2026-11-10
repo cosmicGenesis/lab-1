@@ -1,5 +1,6 @@
 package threads;
 
+import controllers.LoginController;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 import lab1.AttemptTracker;
@@ -12,12 +13,11 @@ public class LoginTask implements Runnable{
     private String username;
     private String password;
     private BlockingQueue<FailedAttempt> failQueue;
-    private Label statusField;
-    private LoginStatus status;
+    private LoginController controller;
 
-    public LoginTask(Label statusField) {
+    public LoginTask(LoginController controller) {
         this.failQueue = ThreadCommunications.getLoginFailQueue();
-        this.statusField = statusField;
+        this.controller = controller;
     }
 
     public void setLoginData(String username, String password) {
@@ -31,12 +31,14 @@ public class LoginTask implements Runnable{
         if(Database.findUser(username)) {
             // check if blocked
             BlockCheckThread blockCheckThread = new BlockCheckThread(username);
-            blockCheckThread.run(); // will throw an exception if blocked
+            blockCheckThread.start(); // will throw an exception if blocked
             try {
                 blockCheckThread.join();
                 if(blockCheckThread.isBlocked()) {
                     return LoginStatus.BLOCKED;
                 } else if(Database.login(username,password)) {
+                    AttemptTracker tracker = Database.getAttemptTracker();
+                    tracker.resetAttempts(username);
                     return LoginStatus.SUCCESS;
                 } else {
                     failQueue.put(new FailedAttempt(username));
@@ -53,32 +55,9 @@ public class LoginTask implements Runnable{
     // general run func
     @Override
     public void run() {
-        this.status = attemptLogin();
+        LoginStatus status = attemptLogin();
         Platform.runLater(()->{
-            switch ((status)){
-                case USER_NOT_FOUND:
-                    statusField.setText("Incorrect login");
-                    break;
-                case FAILED:
-                    // calc attempts left and print
-                    AttemptTracker tracker = Database.getAttemptTracker();
-                    int attemptsLeft = tracker.getAttemptsLeft(this.username);
-                    if(attemptsLeft > 0) {
-                        statusField.setText("Incorrect login, " + attemptsLeft + " attempts left");
-                    } else {
-                        statusField.setText("Incorrect login, user blocked");
-                    }
-                    break;
-                case SUCCESS:
-                    try {
-                        ScreenManager.goToScreen("welcomeView.fxml","Welcome to the System");
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                    break;
-                case BLOCKED:
-                    //TODO: print blocked timer
-            }
+            controller.handleLoginResult(status,this.username);
         });
     }
 

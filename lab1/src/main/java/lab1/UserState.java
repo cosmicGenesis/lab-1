@@ -21,4 +21,7 @@ public class UserState {
         this.failedAttempts = failedAttempts;
     }
 
+    public void setBlockPeriodEnd(int blockPeriodEnd) {
+        this.blockPeriodEnd = blockPeriodEnd;
+    }
 }
