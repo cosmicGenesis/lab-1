@@ -41,7 +41,9 @@ public class LoginTask implements Runnable{
                     tracker.resetAttempts(username);
                     return LoginStatus.SUCCESS;
                 } else {
-                    failQueue.put(new FailedAttempt(username));
+                    FailedAttempt attempt = new FailedAttempt(username);
+                    failQueue.put(attempt);
+                    attempt.getResponse(); 
                     return LoginStatus.FAILED;
                 }
             } catch (InterruptedException e) {
