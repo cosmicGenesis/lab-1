@@ -72,8 +72,7 @@ public class LoginController {
 
         switch ((status)){
             case BLOCKED:
-                errorTextField.setText("User blocked");
-                releaseBtn = true;
+                runThread(this.countdownTask);
                 break;
             case USER_NOT_FOUND:
                 errorTextField.setText("Incorrect login");
