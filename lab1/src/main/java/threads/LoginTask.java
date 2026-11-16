@@ -43,7 +43,10 @@ public class LoginTask implements Runnable{
                 } else {
                     FailedAttempt attempt = new FailedAttempt(username);
                     failQueue.put(attempt);
-                    attempt.getResponse(); 
+                    boolean causedBlock = attempt.getResponse();
+                    if (causedBlock) {
+                        return LoginStatus.BLOCKED;
+                    }
                     return LoginStatus.FAILED;
                 }
             } catch (InterruptedException e) {
