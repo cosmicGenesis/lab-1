@@ -15,5 +15,6 @@
       <TextField fx:id="passwordField" promptText="Password" />
       <Button fx:id="loginBtn" mnemonicParsing="false" onAction="#login" text="Login" />
       <Label fx:id="errorTextField" textFill="RED" />
+      <Button fx:id="testBtn" mnemonicParsing="false" onAction="#runConcurrencyTest" text="Run Concurrency Test" />
    </children>
 </VBox>
