@@ -8,6 +8,17 @@ public class UserState {
         this.failedAttempts = 0;
         this.blockPeriodEnd = 0;
     }
+    public synchronized boolean isBlocked() {
+        if (blockPeriodEnd == 0) {
+            return false;
+        }
+        if (System.currentTimeMillis() >= blockPeriodEnd) {
+            this.failedAttempts = 0;
+            this.blockPeriodEnd = 0;
+            return false;
+        }
+        return true;
+    }
 
     synchronized public int getBlockPeriodEnd() {
         return blockPeriodEnd;

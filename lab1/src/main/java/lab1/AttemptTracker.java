@@ -2,7 +2,6 @@ package lab1;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-import static java.lang.Math.min;
 
 public class AttemptTracker {
     ConcurrentHashMap<String,UserState> states;
