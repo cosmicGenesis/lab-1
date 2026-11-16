@@ -20,6 +20,6 @@ public class BlockCheckThread extends Thread{
     @Override
     public void run() {
         UserState state = Database.getUserState(this.uname);
-        this.isBlocked = (state != null && state.isBlocked());
+        this.isBlocked = state.isBlocked();
     }
 }
