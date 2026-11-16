@@ -2,7 +2,7 @@ package lab1;
 
 public class UserState {
     private int failedAttempts;
-    private int blockPeriodEnd;
+    private long blockPeriodEnd;
 
     public UserState(){
         this.failedAttempts = 0;
@@ -20,7 +20,7 @@ public class UserState {
         return true;
     }
 
-    synchronized public int getBlockPeriodEnd() {
+    synchronized public long getBlockPeriodEnd() {
         return blockPeriodEnd;
     }
 
@@ -32,7 +32,7 @@ public class UserState {
         this.failedAttempts = failedAttempts;
     }
 
-    public void setBlockPeriodEnd(int blockPeriodEnd) {
+    public void setBlockPeriodEnd(long blockPeriodEnd) {
         this.blockPeriodEnd = blockPeriodEnd;
     }
 }

@@ -31,15 +31,16 @@ public class AttemptTracker {
     // increase a users' failed login count, returns if results in a block or not
     public boolean increaseFailedAttempts(String username) {
         UserState state = getUserState(username);
-        int failedAttempts = state.getFailedAttempts() + 1;
-
-        if (failedAttempts >= this.attemptsPermitted) {
-            state.setFailedAttempts(this.attemptsPermitted);
-            state.setBlockPeriodEnd(10);
-            return true;
-        } else {
-            state.setFailedAttempts(failedAttempts);
-            return false;
+        synchronized (state) { 
+            int failedAttempts = state.getFailedAttempts() + 1;
+            if (failedAttempts >= this.attemptsPermitted) {
+                state.setFailedAttempts(this.attemptsPermitted);
+                state.setBlockPeriodEnd(System.currentTimeMillis() + (this.blockTime * 1000L));
+                return true;
+            } else {
+                state.setFailedAttempts(failedAttempts);
+                return false;
+            }
         }
     }
 
