@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import lab1.AttemptTracker;
 import threads.CountdownTask;
 import threads.LoginTask;
+import threads.ConcurrencyTest;
 import util.Database;
 import util.LoginStatus;
 import util.ScreenManager;
@@ -29,6 +30,10 @@ public class LoginController {
     @FXML
     private Button loginBtn;
 
+    @FXML 
+    private Button testBtn;
+
+
     private void runThread(Runnable task) {
         Thread newThread = new Thread(task);
         newThread.setDaemon(true);
@@ -41,10 +46,26 @@ public class LoginController {
         String pass = passwordField.getText();
 
         this.loginBtn.setDisable(true);
+        this.unameField.setDisable(true);   
+        this.passwordField.setDisable(true);
 
         this.loginTask.setLoginData(uname,pass);
         runThread(this.loginTask);
     }
+
+    @FXML
+    void runConcurrencyTest(ActionEvent event) {
+        if (testBtn != null) testBtn.setDisable(true);
+        errorTextField.setText("Running 20-thread concurrency test...");
+        runThread(() -> {
+            String summary = ConcurrencyTest.runExperiment();
+            javafx.application.Platform.runLater(() -> {
+                errorTextField.setText(summary);
+                if (testBtn != null) testBtn.setDisable(false);
+            });
+        });
+    }
+
 
     public void handleLoginResult(LoginStatus status, String username) {
         boolean releaseBtn = false;
@@ -56,6 +77,7 @@ public class LoginController {
                 break;
             case USER_NOT_FOUND:
                 errorTextField.setText("Incorrect login");
+                releaseBtn = true;
                 break;
             case FAILED:
                 // calc attempts left and print
@@ -80,6 +102,8 @@ public class LoginController {
         }
 
         loginBtn.setDisable(!releaseBtn);
+        unameField.setDisable(!releaseBtn);   
+        passwordField.setDisable(!releaseBtn);
     }
 
     public void updateBlockTime(int seconds) {
@@ -89,6 +113,8 @@ public class LoginController {
     public void releaseBlock() {
         errorTextField.setText("");
         loginBtn.setDisable(false);
+        unameField.setDisable(false);     
+        passwordField.setDisable(false);
     }
 
     @FXML
